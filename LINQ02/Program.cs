@@ -1,6 +1,7 @@
 ﻿using static LINQ02.ListGenerator;
 using System.Linq;
 using System.Threading;
+using System.Collections.Generic;
 namespace LINQ02
 {
     internal class Program
@@ -357,17 +358,17 @@ namespace LINQ02
 
             #endregion
 
-            //---------#####################################
+
             #region 8. Create a list of all digits in the array whose second letter is 'i' that is reversed from the order in the original array.
 
-            //string[] Arr = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
+            string[] Arr = { "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine" };
 
-            //var result = Arr.Where(x => x[1]=='i').OrderBy(x => x).ToList();
-            //foreach (var item in result)
-            //{
-            //    Console.WriteLine(item);
-            //}
-
+            var result = Arr.Where(x => x[1] == 'i').OrderBy(x => x).ToList();
+            ///result.Reverse();
+            foreach (var item in result)
+            {
+                Console.WriteLine(item);
+            }
 
             #endregion
 
@@ -504,18 +505,92 @@ namespace LINQ02
             ///---------------------------------------------
 
             #region LINQ - Set Operators
+            #region 1. Find the unique Category names from Product List
+
+            //// Fluent Syntax
+
+
+            //var result = ProductList
+            //           .Select(p => p.Category) 
+            //           .Distinct()                
+            //           .ToList();
+
+            //foreach (var category in result)
+            //{
+            //    Console.WriteLine(category);
+            //}
+
+            //// Query Syntax
+
+
+            //var result = (from p in ProductList
+            //              select p.Category)
+            //              .Distinct();   
+
+            //foreach (var category in result)
+            //{
+            //    Console.WriteLine(category);
+            //} 
+            #endregion
+
+            #region 2. Produce a Sequence containing the unique first letter from both product and customer names.
+            //var result = ProductList
+            //                  .Select(p => p.ProductName.First())
+            //                  .Concat(CustomerList.Select(c => c.CustomerName.First()))
+            //                  .Distinct()
+            //                  .OrderBy(c => c)
+            //                  .ToList();
+
+            //foreach (var letter in result)
+            //{
+            //    Console.WriteLine(letter);
+            //}
+
+            #endregion
+
+            #region 3. Create one sequence that contains the common first letter from both product and customer names.
+
+            //var result = ProductList
+            //             .Select(p => p.ProductName.First())
+            //             .Intersect(CustomerList.Select(c => c.CustomerName.First()))
+            //             .OrderBy(c => c) 
+            //             .ToList();
+
+            //foreach (var letter in result)
+            //{
+            //    Console.WriteLine(letter);
+            //} 
+            #endregion
+
+            #region 4. Create one sequence that contains the first letters of product names that are not also first letters of customer names.
+            //var result = ProductList
+            //                .Select(p => p.ProductName.First())
+            //                .Except(CustomerList.Select(c => c.CustomerName.First()))
+            //                .OrderBy(c => c)
+            //                .ToList();
+
+            //foreach (var letter in result)
+            //{
+            //    Console.WriteLine(letter);
+            //}
+
+
+            #endregion
+
+            #region 5. Create one sequence that contains the last Three Characters in each name of all customers and products, including any duplicates
+
+            //var result = ProductList
+            //       .Select(p => p.ProductName.Length >= 3 ? p.ProductName.Substring(p.ProductName.Length - 3) : p.ProductName)
+            //      .Concat(CustomerList.Select(c => c.CustomerName.Length >= 3 ? c.CustomerName.Substring(c.CustomerName.Length - 3) : c.CustomerName));
+
+            //foreach (var name in result)
+            //{
+            //    Console.WriteLine(name);
+            //}
 
 
 
-
-
-
-
-
-
-
-
-
+            #endregion
 
 
 
@@ -524,6 +599,104 @@ namespace LINQ02
             ///---------------------------------------------
 
             #region LINQ - Partitioning Operators
+            #region 1. Get the first 3 orders from customers in Washington
+
+
+            //var result = CustomerList
+            //       .Where(c => c.City == "Washington")
+            //       .SelectMany(c => c.Orders)
+            //       .Take(3)
+            //       .ToList();
+
+            //foreach (var order in result)
+            //{
+            //    Console.WriteLine(order);
+            //}
+
+
+            #endregion
+
+            #region 2. Get all but the first 2 orders from customers in Washington.
+
+
+            //var result = CustomerList
+            //         .Where(c => c.City == "Washington") 
+            //         .SelectMany(c => c.Orders) 
+            //         .Skip(2) 
+            //         .ToList();
+
+            //foreach (var order in result)
+            //{
+            //    Console.WriteLine(order);
+            //} 
+            #endregion
+
+
+            #region 3. Return elements starting from the beginning of the array until a number is hit that is less than its position in the array.
+            //int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+            //var result = numbers.TakeWhile((N, I) => N >= I).ToList();
+
+            //foreach (var number in result)
+            //{
+            //    Console.WriteLine(number);
+            //}
+
+            //var result = (from num in numbers.Select((value, index) => new { value, index })
+            //              where num.value >= num.index 
+            //              select num.value)
+            //  .ToList();
+
+            //foreach (var number in result)
+            //{
+            //    Console.WriteLine(number);
+            //}
+
+            #endregion
+
+            #region 4.Get the elements of the array starting from the first element divisible by 3.
+
+
+            // int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+            //var result = numbers
+            //    .SkipWhile(num => num % 3 != 0) 
+            //    .ToList();
+
+            //foreach (var item in result)
+            //{
+            //    Console.WriteLine(item);
+            //}
+
+            // Query Syntax
+            //var result = (from num in numbers
+            //              where num % 3 == 0  // 3 9 6 0
+            //              select num)
+            //  .ToList();
+
+            //foreach (var number in result)
+            //{
+            //    Console.WriteLine(number);
+            //}
+
+            #endregion
+
+
+            #region 5. Get the elements of the array starting from the first element less than its position.
+
+            // int[] numbers = { 5, 4, 1, 3, 9, 8, 6, 7, 2, 0 };
+
+            //var result = numbers
+            //    .SkipWhile((num, index) => num >= index) 
+            //    .ToList();
+
+            //foreach (var number in result)
+            //{
+            //    Console.WriteLine(number);
+            //}
+
+
+            #endregion
 
             #endregion
 
@@ -578,7 +751,69 @@ namespace LINQ02
 
             #region LINQ – Grouping Operators
 
+            #region  1.Use group by to partition a list of numbers by their remainder when divided by 5
 
+            //List<int> numbers = new List<int> { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
+
+            //var result = numbers
+            //    .Select((number, index) => new { number, index })  
+            //    .GroupBy(x => x.index / 4)  
+            //    .Select(g => g.Select(x => x.number).ToList())  
+            //    .ToList();
+
+
+            //foreach (var group in result)
+            //{
+            //    Console.WriteLine(" Number with a remainder of 0 when  divided by 5 :");
+            //    foreach (var number in group)
+            //    {
+            //        Console.WriteLine($"{number}");
+            //    }
+            //}
+
+            #endregion
+
+
+            #region 2. Uses group by to partition a list of words by their first letter.
+
+            //string[] words = File.ReadAllLines("dictionary_english.txt");
+
+
+            //var groupedWords = words
+            //    .GroupBy(word => word[0]) 
+            //    .OrderBy(g => g.Key); 
+
+            //foreach (var group in groupedWords)
+            //{
+            //    Console.WriteLine($"Words starting with the letter: {group.Key}");
+            //    foreach (var word in group)
+            //    {
+            //        Console.WriteLine($"  {word}");
+            //    }
+            //} 
+            #endregion
+
+            #region 3.Consider this Array as an Input
+
+
+            //string[] arr = { "from", "salt", "earn", "last", "near", "form" };
+
+            //var groupedWords = arr
+            //    .GroupBy(word => new string(word.OrderBy(c => c).ToArray())) 
+            //    .OrderBy(g => g.Key); 
+
+            //foreach (var group in groupedWords)
+            //{
+            //    Console.WriteLine(group.Key);
+            //    foreach (var word in group)
+            //    {
+            //        Console.WriteLine(word);
+            //    }
+            //} 
+
+
+
+            #endregion
 
 
 
